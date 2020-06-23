@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://hermman.github.io</id>
-    <title>何小明的个人博客</title>
-    <updated>2020-06-23T06:40:32.198Z</updated>
+    <title>何小明的个人博客 -- Stay hungry, stay foolish</title>
+    <updated>2020-06-23T10:41:55.112Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://hermman.github.io"/>
     <link rel="self" href="https://hermman.github.io/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>何以升华，唯有沉淀</subtitle>
     <logo>https://hermman.github.io/images/avatar.png</logo>
     <icon>https://hermman.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, 何小明的个人博客</rights>
+    <rights>All rights reserved 2020, 何小明的个人博客 -- Stay hungry, stay foolish</rights>
+    <entry>
+        <title type="html"><![CDATA[开启我的博客之旅]]></title>
+        <id>https://hermman.github.io/post/kai-qi-wo-de-bo-ke-zhi-lu/</id>
+        <link href="https://hermman.github.io/post/kai-qi-wo-de-bo-ke-zhi-lu/">
+        </link>
+        <updated>2020-06-23T10:03:32.000Z</updated>
+    </entry>
 </feed>

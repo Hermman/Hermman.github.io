@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://hermman.github.io</id>
     <title>何小明的个人博客</title>
-    <updated>2020-06-30T07:34:41.257Z</updated>
+    <updated>2020-06-30T08:03:05.990Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://hermman.github.io"/>
     <link rel="self" href="https://hermman.github.io/atom.xml"/>
@@ -12,8 +12,8 @@
     <rights>All rights reserved 2020, 何小明的个人博客</rights>
     <entry>
         <title type="html"><![CDATA[webpack三部曲（一）--常见配置]]></title>
-        <id>https://hermman.github.io/post/1-webpack.config.js/</id>
-        <link href="https://hermman.github.io/post/1-webpack.config.js/">
+        <id>https://hermman.github.io/post/webpack-1/</id>
+        <link href="https://hermman.github.io/post/webpack-1/">
         </link>
         <updated>2020-06-30T07:27:06.000Z</updated>
     </entry>

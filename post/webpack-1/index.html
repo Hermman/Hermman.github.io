@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>webpack三部曲（一）--常见配置 | 何小明的个人博客</title>
-<link rel="shortcut icon" href="https://hermman.github.io/favicon.ico?v=1593504150060">
+<link rel="shortcut icon" href="https://hermman.github.io/favicon.ico?v=1593504418728">
 <link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.css" rel="stylesheet">
 <link rel="stylesheet" href="https://hermman.github.io/styles/main.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -517,7 +517,7 @@ module.exports = {
     entry: &quot;./src/index.js&quot;,
     output: {
     	path: path.resolve(__dirname, &quot;dist&quot;),
-        filename: &quot;/js/build.[hash:8].js&quot;
+        filename: &quot;js/build.[hash:8].js&quot;
         publicPath: 'htpp:// www.xxx.com' // 打包上线时，给文件添加线上地址，或 cdn 
     },
         
@@ -566,7 +566,7 @@ module.exports = {
                  loader: &quot;url-loader&quot;,
                  options: {
                      limit: 200 * 1024,
-                     outputPath: &quot;/img/&quot;,
+                     outputPath: &quot;img/&quot;,
                  }
               }
             },
@@ -590,7 +590,7 @@ module.exports = {
           }
       }),
       new MiniCssExtractPlugin({
-          filename: &quot;/css/main.css&quot;
+          filename: &quot;css/main.css&quot;
       })
     ]
 } 

@@ -1,0 +1,533 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title> webpack三部曲（二）-- 高级进阶 | 何小明的个人博客</title>
+<link rel="shortcut icon" href="https://hermman.github.io/favicon.ico?v=1593597869336">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.css" rel="stylesheet">
+<link rel="stylesheet" href="https://hermman.github.io/styles/main.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/go.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            何小明的个人博客
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="https://hermman.github.io/post/kai-qi-wo-de-bo-ke-zhi-lu" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                     webpack三部曲（二）-- 高级进阶
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-07-01 ·
+                    </time>
+                    
+                        <a href="https://hermman.github.io/tag/IONLo2M0O/" class="post-tags">
+                            # webpack
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="多页应用">多页应用</h2>
+<p>需求多页应用 : 多个入口， 多出口配置。</p>
+<pre><code class="language-javascript">// webpack.config.js
+const path = require(&quot;path&quot;)
+const HtmlWebpackPlugin = requre(&quot;html-webpack-plugin&quot;)
+
+module.exports = {
+  mode: &quot;development&quot;,
+  entry: {
+    home: &quot;./src/home.js&quot;,
+    other: &quot;./src/other.js&quot;
+  },
+  output: {
+    path: path.resolve(__dirname, &quot;dist&quot;),
+    filename: &quot;[name].js&quot;
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: &quot;./public/index.html&quot;,
+      filename: &quot;home.html&quot;,
+      chunks: [&quot;home&quot;]
+    }),
+    new HtmlWebpackPlugin({
+      template: &quot;./public/index.html&quot;,
+      filename: &quot;other.html&quot;,
+      chunks: [&quot;other&quot;]
+    })
+  ]
+}
+
+</code></pre>
+<h2 id="配置source-map-源码映射">配置source-map (源码映射)</h2>
+<p>源码映射 会单独生成一个 <code>sourcemap</code> 文件，出错了，会标识当前报错的行和列。devtool 配置字段 ，添加映射文件帮助我们调试源代码。</p>
+<p>文件配置如下：</p>
+<pre><code class="language-javascript">module.exports = {
+  // source-map： 生成一个新的.map源文件，报错会产生行和列
+  devtool: &quot;source-map&quot;
+    
+  // eval-source-map: 打包时不会生成一个单独的映射文件，但可以显示行和列
+  devtool: &quot;eval-source-map&quot;
+    
+  // cheap-module-source-map:不会产生列，但会生成一个单独的映射文件
+  devtool: &quot;cheap-module-source-map&quot;
+    
+   // 不会生成文件，集成在打包后的文件中，不会产生列
+   devtool: &quot;cheap-module-eval-source-map&quot;
+}
+</code></pre>
+<h2 id="监听文件实时打包">监听文件实时打包</h2>
+<p>watch 监听文件变化</p>
+<pre><code class="language-javascript">// webpack.config.js
+module.exports = {
+  watch: true,
+  watchOptions: {  // 监控选项
+    poll: 100,    // 每秒询问 100次
+    aggregateTimeout: 500, // 防抖
+    ignored: /node_modules/, // 不需要监控的文件
+  },
+}
+</code></pre>
+<h2 id="webpack插件">webpack插件</h2>
+<ul>
+<li>clean-webpack-plugin  （第三方插件）</li>
+<li>copy-webpack-plugin  （第三方插件）</li>
+<li>banner-plugin  （内置插件）</li>
+</ul>
+<h2 id="webpack-跨域">webpack 跨域</h2>
+<p>（1）使用 proxy  跨域</p>
+<p>配置如下：</p>
+<pre><code class="language-javascript">devServer: {
+    proxy: {  // 使用 proxy 代理转发进行跨域
+      &quot;/api&quot;: {
+        target: &quot;http:// localhost:3000&quot;,  // 代理的服务器地址
+        pathRewrite: {  // 重写路径
+          &quot;/api&quot;: &quot;&quot;  
+        }
+      }
+    }
+  },
+</code></pre>
+<p>（2）前端模拟数据</p>
+<pre><code class="language-javascript">  devServer: {
+    before(app) {
+      app.get(&quot;/user&quot;, (req, res) =&gt; {
+        res.json({ name: &quot;hello webpack&quot; });
+      });
+    },
+  },
+</code></pre>
+<p>（3）在服务端启动webpack</p>
+<pre><code class="language-javascript">const express = require(&quot;express&quot;);
+const webpack = require(&quot;webpack&quot;);
+
+// 安装并引入中间件
+const middle = require(&quot;webpack-dev-middleware&quot;);
+
+const config = require(&quot;./webpack.config&quot;);
+
+const compiler = webpack(config);
+
+app.use(middle(compiler));
+
+app.get(&quot;/&quot;, (req, res) =&gt; {
+  res.json({ name: &quot;webpack&quot; });
+});
+
+const app = express();
+
+app.listen(3000);
+</code></pre>
+<h2 id="resolve-属性配置">resolve 属性配置</h2>
+<pre><code class="language-javascript"> // 解析 第三方包 
+  resolve: {
+    // 解析第三方包时，只去 node_modules 文件目录下找
+    modules: [ path.resolve(&quot;node_modules&quot;) ],  
+    // 文件后缀名
+    extensions: [ &quot;.js&quot;, &quot;.css&quot;, &quot;.json&quot;, &quot;.vue&quot;, &quot;.jsx&quot; ],
+    mainFiles: [], // 入口文件名字 默认：index.js
+    alias: {  // 修改文件别名
+      bootstrap: &quot;bootstrap/dist/css/bootstrap.css&quot; 
+    }
+  },
+</code></pre>
+<h2 id="定义环境变量">定义环境变量</h2>
+<p>webpack.DefinePlugin: 允许创建配置全局常量</p>
+<ul>
+<li>
+<p>用法：</p>
+<pre><code class="language-javascript">// 要配置在plugins数组里面，是webpack内置方法
+new webpack.DefinePlugin({
+    PRODUCTION: JSON.stringify(true),
+    &quot;process.env.DODE_ENV&quot;: JSON.stingify(process.env.NODE_ENV)
+})
+</code></pre>
+</li>
+</ul>
+<h2 id="区分不同的环境">区分不同的环境</h2>
+<p>在开发中，webpack打包配置一般都有两个环境配置（development 和 production）。所以打包配置文件一般会有三个：</p>
+<ul>
+<li>
+<p>webpack.base.js</p>
+<p>基础打包配置：打包入口、出口文件、loader等</p>
+</li>
+<li>
+<p>webpack.dev.js</p>
+<p>开发环境打包配置：devServer、devtool 等</p>
+</li>
+<li>
+<p>webpack.prod.js</p>
+<p>生产环境打包配置：代码压缩，性能优化配置等</p>
+</li>
+</ul>
+<p>用法：使用 webpack-merge</p>
+<ul>
+<li>
+<p>安装： yarn add webpack-merge -D</p>
+</li>
+<li>
+<p>配置：</p>
+<pre><code class="language-javascript">// webpack.base.js
+const path = require(&quot;path&quot;);
+const { CleanWebpackPlugin } = require(&quot;clean-webpack-plugin&quot;);
+const HtmlWepackPlugin = require(&quot;html-webpak-plugin&quot;)
+
+module.exports = {
+  entry: {
+      app: &quot;./src/index.js&quot;
+  },
+  output: {
+    path: path.resolve(__dirname, &quot;dist&quot;),
+    filename: [name].bundle.js
+  },
+   module: {
+   	relus: [
+      { 
+    	test: /\.js/, 
+    	use: {
+    	  loader: &quot;babel-loader&quot;
+		} 
+	   }
+    ]
+  },
+  plugins: [
+    new CleanWebpackPlugin('dist'),
+    new HtmlWepackPlugin({
+      template: &quot;./public/index.html&quot;,
+      filename: &quot;index.html&quot;
+    })
+  ]
+}
+</code></pre>
+<pre><code class="language-javascript">// webpack.prod.js
+const merge = require(&quot;webpack-merge&quot;);
+const base = require(&quot;./webpack.base&quot;);
+
+module.exports = merge(base, {
+  mode: &quot;production&quot;,
+});
+
+</code></pre>
+<pre><code class="language-javascript">// webpack.dev.js
+const merge = require(&quot;webpack-merge&quot;);
+const base = require(&quot;./webpack.base&quot;);
+
+module.exports = merge(base, {
+  mode: &quot;development&quot;,
+  devtool: &quot;source-map&quot;,
+  devServer: {
+    port: 3000,
+    contentBase: &quot;./dist&quot;,
+  },
+});
+</code></pre>
+<pre><code class="language-json">// package.json
+&quot;scripts&quot;: {
+  &quot;start&quot;: &quot;webpack-dev-server --open --config webpack.dev.js&quot;,  
+  &quot;build&quot;: &quot;webpack --config webpack.prod.js&quot;
+    },
+</code></pre>
+</li>
+</ul>
+<h2 id="webpack-优化">webpack 优化</h2>
+<ul>
+<li>
+<p>noParse</p>
+<p>阻止webpack解析第三方包</p>
+<p>noParse属性可接收 正则表达式，函数，字符串，字符串数组</p>
+<pre><code class="language-javascript">module.exports = {
+  module: {
+    noParse: /jquery|loadsh/
+  }
+}
+</code></pre>
+</li>
+<li>
+<p>exclude （排除）</p>
+<pre><code class="language-javascript">{
+  test: /\.js$/,
+  exclude: /node_modules/,
+  use: [
+    loader: &quot;babel-loader&quot;,
+    options: {
+      ...  
+    }
+  ]
+}
+</code></pre>
+</li>
+<li>
+<p>include （包含）</p>
+<pre><code class="language-javascript">{
+  test: /\.js$/,
+  include: path.resolve(&quot;src&quot;),
+  use: [
+    loader: &quot;babel-loader&quot;,
+    options: {
+      ...  
+    }
+  ]
+}
+</code></pre>
+</li>
+<li>
+<p>lgnorePlugin</p>
+<ul>
+<li>
+<p>webpack 内置插件</p>
+</li>
+<li>
+<p>正则表达式</p>
+</li>
+<li>
+<p>可以忽略表达式匹配的第三方包</p>
+<pre><code class="language-javascript">// webpack.config.js 配置
+plugins: [
+    new webpack.
+]
+</code></pre>
+<pre><code class="language-javascript">// 例如引入时间包
+import moment from 'moment'
+// 设置时间语言
+// 手动引入所需要的语言包
+import &quot;moment/locale/zh-cn&quot;
+
+ler r = moment().endOf(&quot;day&quot;).fromNow()
+console.log(r);
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>dllPlugin （动态库）</p>
+</li>
+<li>
+<p>happypack   （使用多线程打包 ）</p>
+<ul>
+<li>
+<p>安装 yan add happypack -D</p>
+</li>
+<li>
+<p>配置</p>
+<pre><code class="language-javascript">// webpack.config.js
+const Happypack = require(&quot;happypack&quot;);
+
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js/,
+        exclude: /node_modules/,
+        use: &quot;Happypack/loader?id=js&quot;
+      }
+    ]
+  },
+  plugins: [
+    new Happypack({
+        id: &quot;js&quot;,
+        use: [{
+          loader: &quot;babel-loader&quot;,
+          options: {
+            presets: [
+              &quot;@babel/preset-env&quot;,
+              &quot;@babel/preset-react&quot;
+            ]
+          }
+        }]
+    })
+  ]
+}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="webpack-自带优化">webpack 自带优化</h2>
+<ul>
+<li>import 在生产环境下 会自动去除掉没有用的代码，tree-shaking</li>
+<li>scope hosting  作用域提升</li>
+</ul>
+<h2 id="webpack-抽离公共代码">webpack 抽离公共代码</h2>
+<p>代码配置如下：</p>
+<pre><code class="language-javascript">module.exports = {
+  // 优化项
+  optimization: {
+    splitChunks: {  // 代码分割
+      cacheGroups: { // 缓存组
+        common: {    // 公共的模块抽离
+          chunks: &quot;initial&quot;,
+          minSize: 0,  // 字节大小
+          miniChunks: 2,  // 最小被引入次数
+        },
+          
+        // 第三方模块抽离
+        vendor: {
+          priority: 1,  // 权重，代码抽离时优先级高
+          test: /node_modules/,  // 只匹配正则里的
+          chunks: &quot;initial&quot;,
+          minSize: 0,
+          minChunks: 2,
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="懒加载">懒加载</h2>
+<blockquote>
+<p>懒加载或者按需加载，是一种很好的优化网页或应用的方式。这种方式实际上是先把你的代码在一些逻辑断点处分离开，然后在一些代码块中完成某些操作后，立即引用或即将引用另外一些新的代码块。这样加快了应用的初始加载速度，减轻了它的总体体积，因为某些代码块可能永远不会被加载</p>
+</blockquote>
+<h2 id="热更新">热更新</h2>
+<ul>
+<li>
+<p>第一步 在devServer中配置：</p>
+<pre><code class="language-javascript">devServer: {
+  hot: true, // 启用热更新
+  port: 3000,
+  open: true,
+  contentBase: './dist'
+}
+</code></pre>
+</li>
+<li>
+<p>第二步 在plugin 插件数组中引用webpack 内置热更新插件</p>
+<pre><code class="language-javascript">plugins: [
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NameModulesPlugin(), // 可指定哪个模块人更新
+]
+</code></pre>
+</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://hermman.github.io/post/webpack-1/" class="post-title gt-a-link">
+                    webpack三部曲（一）--常见配置
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+  <div class="slogan gt-c-content-color-first">
+    何以升华，唯有沉淀
+  </div>
+  <div class="social-container">
+                
+  </div>
+  <div class="footer-info">
+    © 2020 何小明
+  </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+    </div>
+</div>
+</body>
+</html>

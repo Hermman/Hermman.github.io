@@ -1,0 +1,486 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>聊聊 react 源码那些事 | 何小明的个人博客</title>
+<link rel="shortcut icon" href="https://hermman.github.io/favicon.ico?v=1593789111725">
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.css" rel="stylesheet">
+<link rel="stylesheet" href="https://hermman.github.io/styles/main.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/go.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            何小明的个人博客
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="https://hermman.github.io/post/start" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</nav>
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    聊聊 react 源码那些事
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-07-03 ·
+                    </time>
+                    
+                        <a href="https://hermman.github.io/tag/mOzGgQ01e/" class="post-tags">
+                            # react
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <blockquote>
+<p>写在前面的事，源码解析，尽量做到：</p>
+<ul>
+<li>减少示例代码，尽量用简洁语言提取总结中心思想</li>
+<li>提升阅读体验，使用举例或图形表达</li>
+</ul>
+</blockquote>
+<h2 id="jsx-语法">jsx 语法</h2>
+<p>首先说下jsx语法，jsx是react使用的一种特殊的js语法，也叫作“javascript的语法糖”，我们把<code>jsx</code>三个字母拆分一下： js + x =&gt; javascript + xml , 也就是说这个语法是 js 和 xml 语法的一个结合或是组合。</p>
+<h2 id="react哲学">React哲学</h2>
+<p>React 是用 JavaScript 构建快速响应的大型web 应用。</p>
+<p>React特点：</p>
+<ul>
+<li>组件模块化</li>
+<li>单向数据流</li>
+</ul>
+<p>React设计原则：</p>
+<ul>
+<li>组合， 组件之间的组合</li>
+</ul>
+<h2 id="虚拟dom">虚拟DOM</h2>
+<p>Virtual Dom 是一种编程概念，在这个概念中，UI界面是一种理想化，以一种虚拟的表现形式，保存在内存中。而JavaScript对象也是保存在内存中的一种形式，这与Virtual DOM 的概念不谋而和。再通过ReactDOM 等库使之与真实的DOM同步，这个过程叫做<strong>协调</strong>。</p>
+<h2 id="diff-算法">diff 算法</h2>
+<ul>
+<li>
+<p>设计动力</p>
+<p>在调用React的render()方法时，就会创建一颗由React元素组成的树；</p>
+<p>如果state或props更新，会触发render()方法，返回一颗不同的树；</p>
+<p>React需要基于这两颗树之间的差别来判断如何有效的更新UI，以保证当前UI与最新的树保持同步。</p>
+</li>
+<li>
+<p>基于两个假象，提出了启发式算法</p>
+<ol>
+<li>两个不同类型的元素，会产出不同的树；</li>
+<li>通过 <code>key</code> 来保持元素在渲染时的稳定</li>
+</ol>
+</li>
+<li>
+<p>实践中的React diff 算法，</p>
+<p>当两个树进行对比时，React 首先比较两颗树的根节点。</p>
+<ol>
+<li>
+<p><strong>比较不同类型的元素</strong></p>
+<p>当根节点为不同类型的元素时，React就是移除掉原来的树，并渲染新的树。</p>
+<blockquote>
+<p>举个例子：当元素<a> 变成<img>,就会触发整个重建流程</p>
+<p>所以在移除原来树的时候，对应的DOM节点也会被销毁，组件就会执行 <code>componentwillUnmount()</code>方法</p>
+</blockquote>
+<p>在渲染新的DOM树时，组件实例就是执行 <code>componentWilMount()</code>方法，紧接着 <code>componentDidMount()</code>方法</p>
+<pre><code class="language-jsx">&lt;div&gt;
+	&lt;Counter /&gt;
+&lt;/div&gt;
+
+&lt;span&gt;
+	&lt;Counter /&gt;
+&lt;/span&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>比较同一类型的元素</strong></p>
+<p>当对比两个相同类型的React元素时，React会保留DOM节点，仅对比有变化的属性。</p>
+<p>比如:</p>
+<pre><code class="language-jsx">&lt;div className=&quot;before&quot; title=&quot;hello&quot; /&gt;
+
+&lt;div className=&quot;after&quot; title=&quot;hello&quot; /&gt;
+</code></pre>
+<p>通过对比两个元素，就知道只需要修改DOM元素上的className属性，其他属性无需更改。</p>
+</li>
+<li>
+<p><strong>对比同类型的组件元素</strong></p>
+</li>
+<li>
+<p><strong>对子节点进行递归</strong></p>
+<p>默认条件下，当递归DOM节点的子元素时，React会同时遍历两个子元素的列表，当产生差异时，就会生成一个mutation 。</p>
+<p><strong>在子元素列表末尾新增元素时，更变开销比较小</strong>。比如：</p>
+<pre><code class="language-jsx">&lt;ul&gt;
+	&lt;li&gt;first&lt;/li&gt;
+    &lt;li&gt;second&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ul&gt;
+	&lt;li&gt;first&lt;/li&gt;
+    &lt;li&gt;second&lt;/li&gt;
+    &lt;li&gt;third&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<p><strong>在列表头部插入会很影响性能，那么更变开销会比较大</strong>。比如：</p>
+<pre><code class="language-jsx">&lt;ul&gt;
+  &lt;li&gt;Duke&lt;/li&gt;
+  &lt;li&gt;Villanova&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Connecticut&lt;/li&gt;
+  &lt;li&gt;Duke&lt;/li&gt;
+  &lt;li&gt;Villanova&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+</li>
+</ol>
+<p><strong>Keys</strong></p>
+<p>​	为了解决渲染子元素带来的性能问题，React 支出 key 属性。</p>
+<p>当子元素渲染拥有了Key属性时，React 使用key来匹配原有树上的子元素 以及 最新树上的子元素。新增了key 之后，使得转换效率得到了提升。</p>
+<blockquote>
+<p>这个 key 不需要全局唯一，但在列表中需要保持唯一。</p>
+</blockquote>
+<pre><code class="language-jsx">&lt;ul&gt;
+  &lt;li key=&quot;2018&quot;&gt;Duke&lt;/li&gt;
+  &lt;li key=&quot;2019&quot;&gt;Villanova&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ul&gt;
+  &lt;li key=&quot;2020&quot;&gt;Connecticut&lt;/li&gt;
+  &lt;li key=&quot;2018&quot;&gt;Duke&lt;/li&gt;
+  &lt;li key=&quot;2019&quot;&gt;Villanova&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<p>最后，你也可以使用元素在数组中的下标作为 key。这个策略在元素不进行重新排序时比较合适，但一旦有顺序修改，diff 就会变得慢。</p>
+<p>当基于下标的组件进行重新排序时，组件 state 可能会遇到一些问题。由于组件实例是基于它们的 key 来决定是否更新以及复用，如果 key 是一个下标，那么修改顺序时会修改当前的 key，导致非受控组件的 state（比如输入框）可能相互篡改导致无法预期的变动。</p>
+</li>
+</ul>
+<p><strong>总结上述： react diff 优化策略 可以理解为一棵子树能在其兄弟之间移动，但不能移动到其他位置。</strong></p>
+<h2 id="setstate-原理">setState 原理</h2>
+<p><code>setState()</code>会将组件state的更改加入队列中，将<code>setState()</code>视为请求而不是立即组件的命令。为了更好的感知性能，React会延迟调用它，然后会执行批量更新机制，React 并不会保证 state 的变更会立即生效。</p>
+<p><code>setState()</code> 并不总是立即更新组件。它会批量推迟更新。这里就会出现一个问题：<strong>这使得当前 this.state 的值没有立即更改。</strong> 为了解决这个问题，可以使用 <code>componentDidUpdate</code> 或者 <code>setState</code> 的第二个参数 <code>callback</code>，可保证应用触发更新后能获取最新的 <code>state</code>  的值。</p>
+<pre><code class="language-jsx">// 例如：
+this.setState({ value: 1 }, () =&gt; {
+    console.log(this.state.value)
+})
+// 或者第一个参数为函数，返回一个对象，第二个参数callback不变
+this.setState(prevState =&gt; ({value: prevState + 1}),()=&gt; {
+    console.log(this.state.value)
+})
+</code></pre>
+<p>除非  <code>shouldComponentUpdate()</code> 返回 false, 否则 <code>setState()</code> 将始终执行重新渲染操作。</p>
+<p><code>setState</code>参数一 可以是一个带有形参的 <code>updater</code> 函数 或是 对象。比如：</p>
+<pre><code class="language-jsx">this.setState((state, props) =&gt; ({
+   value: state.value + props.step
+}))
+// 除了接收上面函数外，还可以接受对象类型,
+// 这种形式的也是异步的，并且会在同一周期内会对多个setState进行批处理
+this.setState({ value: 1 })
+</code></pre>
+<p>如果采用对象形式的写法，比如 this.setState({ value: 1 }); 多次调用只是对 state 进行了前合并，就像下面这样：</p>
+<pre><code class="language-jsx">Object.assigin(
+	prevState,
+    { value: state.value + 1 }，
+    { value: state.value + 1 }
+)
+</code></pre>
+<p>如果在更新的时候，后续状态取决于当前状态，那么建议使用 updater 函数的形式替代，就像下面这样：</p>
+<pre><code class="language-jsx">this.setState((state) =&gt; ({ value: state.value + 1 }))
+</code></pre>
+<p><code>setState</code> 参数二回调函数： 为可选参数。它会在setState函数完成合并后立即执行。不过，还是建议使用 <code>componentDidUpdate()</code>方法来替代此方法。</p>
+<p><strong>深入学习： 何时以及为什么 setState() 会批量更新？</strong></p>
+<h2 id="react中的事件">react中的事件</h2>
+<p>React 元素的事件处理 和 DOM 元素的事件处理很相似，只不过React做了一些浏览器兼容，也叫：React合成事件</p>
+<p>与原生js 事件不同的是：</p>
+<ol>
+<li>
+<p>命名方式：React 事件的命名采用小驼峰命名方式而不是原生的纯小写</p>
+<pre><code class="language-jsx">// 原生js中的点击事件
+&lt;button onclick=&quot;alertclick()&quot;&gt;
+	btn
+&lt;/button&gt;
+
+// react中的点击事件
+&lt;button onClick={alertClick}&gt;
+	btn
+&lt;/button&gt;
+</code></pre>
+</li>
+<li>
+<p>阻止默认行为</p>
+<p>原生js 中通过返回 <code>false</code>  的方式阻止默认行为；</p>
+<p>而React中需要显示的使用 <code>prevevtDefault</code> 来阻止默认行为。</p>
+<pre><code class="language-jsx">// 原生js阻止默认方式
+&lt;a herf=&quot;#&quot; onclick=&quot;return false&quot;&gt;
+    click me
+&lt;/a&gt;
+
+// react中阻止默认行为
+function App() {
+    // 这里的e是一个合成事件。React根据W3C规范来定义了这些合成事件。
+    const handleClick = (e) =&gt; {
+        e.preventDefault();
+        console.log(&quot;...&quot;)
+    }
+    return (
+    	&lt;a href=&quot;#&quot; onClick={handleClick}&gt;
+        	clicke me
+        &lt;/a&gt;
+    )
+}
+</code></pre>
+<p>使用React时，一般不需要使用 addEventListener 为已创建的DOM 元素添加监听事件。</p>
+<p>当使用 class 组件时，通常是将事件处理函数声明为 class 中的方法。</p>
+<p>class 的方法默认不会绑定 this， 这时需要手动去绑定一下，否则 this 的值为 undefined 。</p>
+<pre><code class="language-jsx">import React from 'react';
+
+class A extends React.Component {
+	contructor(props) {
+        super(props);
+        // 方法一： 使用 bind 绑定 this:
+        this.handleBtn1 =this.handleBtn1.bind(this)
+    }
+    
+    handleBtn1() {
+        console.log('btn1')
+    }
+    // 方法二： 绑定回调函数
+    handleBtn2 = () =&gt; {
+        console.log('btn2')
+    }
+    
+    // 方法三
+    handleBtn3() {
+        console.log('btn3')
+    }
+    
+    render() {
+        return (
+          &lt;div&gt;
+            &lt;button onClick={this.handleBtn1}&gt;
+               btn1
+            &lt;/button&gt;
+            &lt;button onClick={this.handleBtn2}&gt;
+              btn2
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; this.handleBtn3}&gt;
+              btn3
+            &lt;/button&gt;
+           &lt;/div&gt;
+        )
+    }
+}
+</code></pre>
+</li>
+</ol>
+<p><strong>通过事件处理函数传参</strong></p>
+<p>有以下两种方式可以传递参数：</p>
+<pre><code class="language-jsx">// 方法一： 使用 bind 来实现， 事件对象 e 被隐式传递
+&lt;button onClick={this.handleDelete.bind(this, id)}&gt;Delete&lt;/button&gt;
+// 方法二： 使用箭头函数实现， 事件对象 e 需要被显示的进行传递
+&lt;button onClick={(e) =&gt; handleDelete(id, e)}&gt;Delete&lt;/button&gt;
+</code></pre>
+<h2 id="react-最新版本的生命周期api">react 最新版本的生命周期API</h2>
+<ul>
+<li>
+<p>挂载</p>
+<pre><code class="language-jsx'">import React from 'react';
+
+class A extends React.Component {
+	// 1. 初始化
+	constructor(props) {
+		super(props);
+		this.state = {}
+	}
+	
+	// 2. 组件将要挂载前 (旧版，即将被废弃)
+	componentWillMount() {
+		// ...
+	}
+	
+	// 2. 新版
+	static getDerivedStateFromProps() {
+		// ..
+	}
+	
+	// 4. 组件挂载完成后
+	componentDidMount() {
+		// ...
+	}
+	
+	// 3. 组件渲染
+	render() {
+		return (&lt;div&gt;hello&lt;/div&gt;)
+	}
+}
+</code></pre>
+</li>
+<li>
+<p>更新</p>
+<ol>
+<li>旧版：<code>componentWillReceiveProps()</code>  =&gt; 新版：  <code>static getDerivedStateFormProps()</code></li>
+<li><code>shouldComponentUpdate()</code></li>
+<li><code>render()</code></li>
+<li>旧版：<code>componentWillUpdate()</code> =&gt; 新版：<code>getSnapshootBeforeUpdate()</code></li>
+<li><code>componentDidUpdate()</code></li>
+</ol>
+</li>
+<li>
+<p>卸载</p>
+<p><code>componentWillUnmount()</code></p>
+</li>
+</ul>
+<h2 id="react-hook">react hook</h2>
+<p>Hook 是 React 16.8 的新特性。其特点是：可以在函数组件组件中使用 <code>state</code> 以及其他特性。</p>
+<p>先看一个简单的例子：</p>
+<pre><code class="language-jsx">import React, { useState } from 'react';
+
+function A() {
+    const [ text, setText ] = useState('world')
+    return (
+    	&lt;div&gt;
+        	&lt;h1&gt;hello { text }&lt;/h1&gt;
+        &lt;/div&gt;
+    )
+}
+</code></pre>
+<ul>
+<li>
+<p><strong>useState</strong></p>
+<p>使用useState可以在函数组件中使用state,</p>
+<p>可以解构出两个值，值1：当前要使用的state, 值2：改变state的函数</p>
+<p>useState在实例化时，接受一个初始化参数。</p>
+</li>
+</ul>
+<p>那么问题来了：</p>
+<p><strong>useState方法的时候做了什么？</strong></p>
+<ol>
+<li>定义了一个 state 变量</li>
+<li>这是一种函数调用时保存变量的方式</li>
+<li>它与 class 里面的 this.state 提供的功能完全相同</li>
+<li>state 中的变量会被 React 保留</li>
+</ol>
+<p><strong>useState 需要哪些参数？</strong></p>
+<ol>
+<li>useState() 方法唯一的参数就是初始化 state</li>
+<li>如果需要存储不同的变量，只需要调用两次 useState()</li>
+</ol>
+<p><strong>useState 方法的返回值是什么？</strong></p>
+<ol>
+<li>当前 state 以及更新 state 的函数</li>
+</ol>
+<blockquote>
+<p>方括号有什么用？</p>
+<p>在使用 useState 定义一个变量的时候，等号左边有个方括号；</p>
+<p>这种是 ES6 中的<strong>数组解构</strong>，意味着我们在等号左边同时创建了两个变量，等号后边执行了 useState() 函数，该函数返回的返回值赋值给了数组中的变量，比如： const [ count, setCount ] = useState(0)</p>
+<p>等同于：</p>
+<p>var countVariable = useState(0);</p>
+<p>var count = countVariable [0];</p>
+<p>var setCount  = countVariable [1];</p>
+</blockquote>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://hermman.github.io/post/webpack-2/" class="post-title gt-a-link">
+                     webpack三部曲（二）-- 高级进阶
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+  <div class="slogan gt-c-content-color-first">
+    何以升华，唯有沉淀
+  </div>
+  <div class="social-container">
+                
+  </div>
+  <div class="footer-info">
+    © 2020 何小明
+  </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+    </div>
+</div>
+</body>
+</html>

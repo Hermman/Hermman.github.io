@@ -3,7 +3,7 @@
     <meta charset="utf-8"/>
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>开启我的博客之旅 | 何小明的个人博客</title>
+<title>常见的三大直播协议 | 何小明的个人博客</title>
 <link rel="shortcut icon" href="https://hermman.github.io/favicon.ico?v=1595833129520">
 <link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.css" rel="stylesheet">
 <link rel="stylesheet" href="https://hermman.github.io/styles/main.css">
@@ -87,25 +87,85 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    开启我的博客之旅
+                    常见的三大直播协议
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-06-23 ·
+                        · 2020-07-27 ·
                     </time>
                     
-                        <a href="https://hermman.github.io/tag/CnmBiHg-O/" class="post-tags">
-                            # Gridea
+                        <a href="https://hermman.github.io/tag/a1vLApOZ7/" class="post-tags">
+                            # 直播协议
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>今天开启了我的博客之旅···😀</p>
+                    <p>受到大环境影响，越来越多的公司开始研发自己的直播平台，作为开发者，有必要了解或学习，那就先从直播协议开始吧！</p>
+<!-- more -->
+<h2 id="常见的直播协议">常见的直播协议</h2>
+<p>国内常见的直播协议有：<code>RTMP</code>、<code>HLS</code>、<code>HTTP-FLV</code></p>
+<h3 id="rtmp">RTMP</h3>
+<p>RTMP, 全称 Real Time Messageing Protocol，实时消息传送协议。是 Adobe 公司为 Flash 播放器和服务器之间音视频数据传输开发的私有协议。</p>
+<p><strong>工作原理</strong></p>
+<p>工作在TCP之上的明文协议，默认端口是 1935 。协议中的基本数据单元为消息；传输过程中消息会被拆分为更小的消息块（chunk）单元，最后将分割的消息块通过TCP协议传输，接收端再反解 接收的消息块恢复成流媒体。</p>
+<p><strong>优点</strong></p>
+<ol>
+<li>RTMP的延迟相对比较低，一般延迟在1~3s之间；</li>
+<li>对所有支持Adobe Flash的设备都支持RTMP</li>
+<li>适合长时间播放</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li>它是基于 TCP 传输的，非公共端口，可能会被防火墙阻拦</li>
+<li>在IOS端支持不友好</li>
+</ol>
+<h3 id="flv">FLV</h3>
+<p>FLV，是Adobe公司推出的另一种视频格式，是一种数据存储容器格式。</p>
+<p>其格式相对简单轻量，加载速度极快，文件后缀名为 .flv 。</p>
+<p><strong>原理</strong></p>
+<p>HTTP-FLV 是将流媒体封装成 FLV 格式，然后通过 HTTP协议传输给客户端。</p>
+<p>HTTP-FLV 依靠 MIME 的特性，根据协议中的 Content-Type 来选择相应的程序去处理相应的内容，使得流媒体可以通过 HTTP 传输</p>
+<p><strong>优点</strong></p>
+<ol>
+<li>相比RTMP协议，HTTP-FLV 能够很好的穿透防火墙，它是基于 HTTP/80传输，可以有效的避免防火墙的拦截。</li>
+<li>支持使用 HTTPS 加密传输，能够兼容 Android 、ios 的移动端。</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li>由于它的传输特性，会让流媒体资源缓存在本地客户端，在保密性方面不够好</li>
+<li>因为网络流量较大，它也不适合做拉流协议</li>
+</ol>
+<h3 id="hls">HLS</h3>
+<p>HLS，是苹果公司基于HTTP的流媒体传输协议。主要应用于ios设备。</p>
+<p><strong>工作原理</strong></p>
+<p>不同于其他协议的，它会在服务端将流媒体数据切割成连续的时长较短的ts小文件，并通过M3U8索引文件按序访问ts文件，客户端只要不停放的按序播放从服务端获取到的文件，从而实现播放音视频。</p>
+<p>HLS的优势：</p>
+<ul>
+<li>Apple的全系列产品的支持；</li>
+<li>穿透防火墙，基于http/80传输，有效避免防火墙拦截</li>
+<li>性能高，通过http传输，支持网络分发，CDN支持良好，且自带多码率自适应</li>
+</ul>
+<p>HLS的劣势:</p>
+<ul>
+<li>
+<p>时效性差，延迟高</p>
+</li>
+<li>
+<p>文件碎片，造成海量的小文件，对存储和缓存有一定的挑战性</p>
+</li>
+</ul>
 
                 </div>
             </article>
         </div>
 
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://hermman.github.io/post/react-1/" class="post-title gt-a-link">
+                    聊聊 react 源码那些事
+                </a>
+            </div>
         
 
         

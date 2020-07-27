@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://hermman.github.io</id>
     <title>何小明的个人博客</title>
-    <updated>2020-07-03T15:13:36.290Z</updated>
+    <updated>2020-07-27T06:58:51.935Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://hermman.github.io"/>
     <link rel="self" href="https://hermman.github.io/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://hermman.github.io/images/avatar.png</logo>
     <icon>https://hermman.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 何小明的个人博客</rights>
+    <entry>
+        <title type="html"><![CDATA[常见的三大直播协议]]></title>
+        <id>https://hermman.github.io/post/zhiboxie1/</id>
+        <link href="https://hermman.github.io/post/zhiboxie1/">
+        </link>
+        <updated>2020-07-27T06:42:20.000Z</updated>
+        <summary type="html"><![CDATA[<p>受到大环境影响，越来越多的公司开始研发自己的直播平台，作为开发者，有必要了解或学习，那就先从直播协议开始吧！</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>受到大环境影响，越来越多的公司开始研发自己的直播平台，作为开发者，有必要了解或学习，那就先从直播协议开始吧！</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[聊聊 react 源码那些事]]></title>
         <id>https://hermman.github.io/post/react-1/</id>
